@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ycy.myblog.dao.CategoryInfoMapper">
+  <resultMap id="BaseResultMap" type="com.ycy.myblog.bean.CategoryInfo">
+
+    <id column="category_id" jdbcType="INTEGER" property="categoryId" />
+    <result column="category_name" jdbcType="VARCHAR" property="categoryName" />
+    <result column="category_alias" jdbcType="VARCHAR" property="categoryAlias" />
+    <result column="category_desc" jdbcType="VARCHAR" property="categoryDesc" />
+    <result column="number" jdbcType="INTEGER" property="number" />
+  </resultMap>
+  <sql id="Base_Column_List">
+
+    category_id, category_name, category_alias, category_desc
+  </sql>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+
+    select 
+    <include refid="Base_Column_List" />
+    from category_info
+    where category_id = #{categoryId,jdbcType=INTEGER}
+  </select>
+
+    <select id="getCateList" parameterType="com.ycy.myblog.bean.CategoryInfo" resultMap="BaseResultMap">
+      select c.*,b.number from category_info c left join
+      (SELECT category_id , COUNT(article_id) number from article_info GROUP BY
+      category_id ) b on c.category_id = b.category_id
+    </select>
+
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+
+    delete from category_info
+    where category_id = #{categoryId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.ycy.myblog.bean.CategoryInfo">
+
+    insert into category_info (category_id, category_name, category_alias, 
+      category_desc)
+    values (#{categoryId,jdbcType=INTEGER}, #{categoryName,jdbcType=VARCHAR}, #{categoryAlias,jdbcType=VARCHAR}, 
+      #{categoryDesc,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ycy.myblog.bean.CategoryInfo">
+
+    insert into category_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="categoryId != null">
+        category_id,
+      </if>
+      <if test="categoryName != null">
+        category_name,
+      </if>
+      <if test="categoryAlias != null">
+        category_alias,
+      </if>
+      <if test="categoryDesc != null">
+        category_desc,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="categoryId != null">
+        #{categoryId,jdbcType=INTEGER},
+      </if>
+      <if test="categoryName != null">
+        #{categoryName,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryAlias != null">
+        #{categoryAlias,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryDesc != null">
+        #{categoryDesc,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.ycy.myblog.bean.CategoryInfo">
+
+    update category_info
+    <set>
+      <if test="categoryName != null">
+        category_name = #{categoryName,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryAlias != null">
+        category_alias = #{categoryAlias,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryDesc != null">
+        category_desc = #{categoryDesc,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where category_id = #{categoryId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ycy.myblog.bean.CategoryInfo">
+
+    update category_info
+    set category_name = #{categoryName,jdbcType=VARCHAR},
+      category_alias = #{categoryAlias,jdbcType=VARCHAR},
+      category_desc = #{categoryDesc,jdbcType=VARCHAR}
+    where category_id = #{categoryId,jdbcType=INTEGER}
+  </update>
+</mapper>

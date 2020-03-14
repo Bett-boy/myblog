@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>个人博客</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="/front/css/base.css" rel="stylesheet">
+<link href="/front/css/index.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="/admin/css/bootstrap.min.css">
+</head>
+<body>
+<header>
+    <nav>
+        <ul>
+            <li><a href="/blog/index">网站首页</a></li>
+              <#list (cateList)! as catelist>
+                  <li><a href="/blog/list?page=1&catagoryId=${(catelist.categoryId)}&categoryName=${(catelist.categoryName)!}">${(catelist.categoryName)!}</a></li>
+              </#list>
+            <li><a href="/blog/message">留言</a></li>
+        </ul>
+    </nav>
+</header>
+<article>
+    <div class="pics">
+        <ul>
+            <li><img src="/front/picture/42d76eafa6495d9647a4fd245201f56c.jpg"></li>
+            <li><img src="/front/picture/c9668d65657bc41b77f6834984538979.jpg"></li>
+            <li><img src="/front/picture/13ec5c876bf437fd7e9e6b12b565a69c.jpg"></li>
+        </ul>
+    </div>
+    <div class="sleftbox">
+        <div class="newblogs">
+            <h2 class="hometitle">最新文章</h2>
+            <ul>
+             <#list (articleInfoList)! as artlist >
+                <li>
+                    <h3 class="blogtitle">
+                        <a href="/blog/indexview/${(artlista.articleId)!}" target="_blank" >${(artlist.articleTitle)!}</a>
+                    </h3>
+                    <div class="bloginfo">
+                        <span class="blogpic">
+                          <a href="/blog/indexview/${(artlist.articleId)!}"></a>
+                        </span>
+                        <p>
+                            <#if artlist.articleContent?length gt 60>
+                            ${artlist.articleContent?substring(0,60)}
+                                <#else >
+                                ${(artlist.articleContent)!}
+                            </#if>
+                        </p>
+                    </div>
+                    <div class="autor">
+                        <span class="lm f_l">
+                            <a href="/blog/list?page=1&categoryId=${(artlist.categoryId)}&categoryName=${(artlist.categoryName)!}" title="网站建设" target="_blank"  class="classname">${(artlist.categoryName)!}</a>
+                        </span>
+                        <span class="dtime f_l">${(artlist.articleTime?string('yyyy-MM-dd HH:mm:ss'))!}</span>
+                        <span class="viewnum f_l">浏览（<a href="/blog/indexview/${(artlist.articleId)!}">292</a>）</span>
+                        <span class="f_r">
+                            <a href="/blog/indexview/${(artlist.articleId)!}" class="more">阅读原文>></a>
+                        </span>
+                    </div>
+                </li>
+             </#list>
+
+            </ul>
+        </div>
+    </div>
+    <div class="srightbox">
+        <div class="aboutme">
+            <h2 class="ab_title">关于我</h2>
+            <div class="avatar"><img src="/front/picture/b04.jpg" /></div>
+            <div class="ab_con">
+                <p>网名：超拽的屌丝男 | 老范</p>
+                <p>职业：未来的Java工程师 </p>
+            </div>
+        </div>
+        <div class="search">
+            <form action="/blog/es" method="post" name="searchform" id="searchform">
+                <input name="name" class="input_text" placeholder="请输入关键字" style="color: rgb(153, 153, 153);" type="text">
+                <input name="Submit" class="input_submit" value="搜索" type="submit">
+            </form>
+        </div>
+        <div class="paihang">
+            <h2 class="ab_title"><a href="/blog/indexview/${(artlist.articleId)!}">站长推荐</a></h2>
+            <ul>
+                <#list (artDocList)! as doclist >
+                <li><b><a href="/blog/indexview/${(doclist.articleId)!}" target="_blank">${(doclist.articleTitle)!}</a></b>
+                    <p>
+                            <#if doclist.articleContent?length gt 50>
+                                ${doclist.articleContent?substring(0,50)}
+                            <#else >
+                                ${(doclist.articleContent)!}
+                            </#if>
+                    </p>
+                </li>
+                </#list>
+            </ul>
+            <div class="ad"><img src="/front/picture/ad300x100.jpg"></div>
+        </div>
+    </div>
+</article>
+<footer>
+    <p>Design by <a href="http://www.XXX.com">个人博客</a> <a href="/">渝ICP备</a></p>
+</footer>
+</body>
+</html>
